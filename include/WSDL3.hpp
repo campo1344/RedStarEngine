@@ -4,11 +4,38 @@
 #include <iostream>
 #include <vector>
 
-typedef struct Texture
+#include <SDL3_image/SDL_image.h>
+
+class Texture
 {
-    SDL_Texture *texture = nullptr;
+private:
+    SDL_Texture *textureDir = nullptr;
     std::string name = "";
-} Texture;
+
+public:
+    Texture() {}
+    inline ~Texture()
+    {
+        SDL_DestroyTexture(this->textureDir);
+    }
+
+    inline bool CreateTextureFromFile(std::string nameTexture, const char *FilePath, SDL_Renderer *renderer)
+    {
+        SDL_Surface *tempSurface = IMG_Load(FilePath);
+        this->textureDir = SDL_CreateTextureFromSurface(renderer, tempSurface);
+        SDL_DestroySurface(tempSurface);
+
+        if (textureDir != nullptr)
+        {
+            this->name = nameTexture;
+            return true;
+        }
+        return false;
+    }
+
+    inline std::string GetName() { return name; }
+    inline SDL_Texture *GetTexture() { return textureDir; }
+};
 
 typedef struct Sprite
 {
