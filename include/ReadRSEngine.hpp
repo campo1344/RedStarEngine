@@ -5,8 +5,6 @@
 #include <sstream>
 #include <json.hpp>
 
-// System of Red Stars Engine 2025
-
 inline void ReadDataOfFileString(const char *FilePath, std::string *Data)
 {
     std::ifstream FileData;
