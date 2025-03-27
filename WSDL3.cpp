@@ -48,23 +48,15 @@ void WSDL3::Event()
     }
 }
 
-#include <SDL3_image/SDL_image.h>
-
 bool WSDL3::CreateTexture(const char *FilePath, std::string name)
 {
-    Texture *text = new Texture;
-    text->name = name;
-    SDL_Surface *TempSurface = IMG_Load(FilePath);
-    text->texture = SDL_CreateTextureFromSurface(this->renderer, TempSurface);
-    SDL_DestroySurface(TempSurface);
-
-    if (text->texture != nullptr)
+    Texture *text = new Texture();
+    if (!text->CreateTextureFromFile(name, FilePath, this->renderer))
     {
-        textures.push_back(text);
-        return true;
+        return false;
     }
-    delete text;
-    return false;
+    textures.push_back(text);
+    return true;
 }
 
 Sprite *WSDL3::CreateSprite(std::string name)
@@ -75,9 +67,9 @@ Sprite *WSDL3::CreateSprite(std::string name)
 
     for (auto &text : textures)
     {
-        if (text->name == name)
+        if (text->GetName() == name)
         {
-            spr->texture = text->texture;
+            spr->texture = text->GetTexture();
             break;
         }
     }
@@ -104,6 +96,10 @@ Sprite *WSDL3::CreateSprite(std::string name)
 
 bool WSDL3::DestroySprite(Sprite *DSprite)
 {
+    if (DSprite == nullptr)
+    {
+        return false;
+    }
     for (int x = 0; x < sprites.size(); x++)
     {
         if (DSprite->id == sprites[x]->id)
@@ -125,11 +121,11 @@ void WSDL3::ClearAllSprite()
     sprites.clear();
     idSpriteMax = 0;
 }
+
 void WSDL3::ClearAllTexture()
 {
     for (auto &text : textures)
     {
-        SDL_DestroyTexture(text->texture);
         delete text;
     }
     textures.clear();
@@ -199,7 +195,7 @@ bool WSDL3::DestroyCamera(Camera *dcam)
             delete cameras[x];
             dcam = nullptr;
             cameras.erase(cameras.begin() + x);
-            return false;
+            return true;
         }
     }
     return false;
