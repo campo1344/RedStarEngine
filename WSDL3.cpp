@@ -187,7 +187,7 @@ Camera *WSDL3::CreateCamera(int w, int h, int x, int y)
 bool WSDL3::DestroyCamera(Camera *dcam)
 {
 
-    if (dcam != nullptr)
+    if (dcam == nullptr)
     {
         return false;
     }
