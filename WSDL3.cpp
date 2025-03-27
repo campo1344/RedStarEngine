@@ -53,6 +53,7 @@ bool WSDL3::CreateTexture(const char *FilePath, std::string name)
     Texture *text = new Texture();
     if (!text->CreateTextureFromFile(name, FilePath, this->renderer))
     {
+        delete text;
         return false;
     }
     textures.push_back(text);
