@@ -18,12 +18,12 @@ public:
     {
         if (objController != nullptr)
         {
-            this->other = objController;
+            this->ThisObject = objController;
         }
     }
 
 protected:
-    ECS *other = nullptr;
+    ECS *ThisObject = nullptr;
 };
 
 class ECS
@@ -84,10 +84,10 @@ class DrawSprite : public Component
 public:
     void Update(float DeltaTime) override
     {
-        if (this->other != nullptr)
+        if (this->ThisObject != nullptr)
         {
-            other->sprUse->dest.x = other->Position.x - (other->width * x);
-            other->sprUse->dest.y = other->Position.y - (other->height * y);
+            ThisObject->sprUse->dest.x = ThisObject->Position.x - (ThisObject->width * x);
+            ThisObject->sprUse->dest.y = ThisObject->Position.y - (ThisObject->height * y);
         }
     }
     // float 0 - 1
@@ -107,17 +107,17 @@ class RotationOn : public Component
 public:
     void Update(float DeltaTime) override
     {
-        if (this->other != nullptr)
+        if (this->ThisObject != nullptr)
         {
-            float Rad = DegToRad(this->other->Angle);
+            float Rad = DegToRad(this->ThisObject->Angle);
 
             if (rotObject != nullptr)
             {
-                this->other->Position.x = rotObject->Position.x + std::cos(Rad) * Radio;
-                this->other->Position.y = rotObject->Position.y + std::sin(Rad) * Radio;
+                this->ThisObject->Position.x = rotObject->Position.x + std::cos(Rad) * Radio;
+                this->ThisObject->Position.y = rotObject->Position.y + std::sin(Rad) * Radio;
             }
 
-            this->other->Angle -= 1 * DeltaTime;
+            this->ThisObject->Angle -= 1 * DeltaTime;
         }
     }
 
@@ -140,7 +140,7 @@ class SimpleControllerRPGNoCollision : public Component
 public:
     void Update(float DeltaTime) override
     {
-        if (this->other != nullptr)
+        if (this->ThisObject != nullptr)
         {
             for (int x = 0; x < 4; x++)
             {
@@ -156,19 +156,19 @@ public:
 
             if (CheckKey[0])
             {
-                this->other->Position.y -= SpeedMovent * DeltaTime;
+                this->ThisObject->Position.y -= SpeedMovent * DeltaTime;
             }
             if (CheckKey[1])
             {
-                this->other->Position.y += SpeedMovent * DeltaTime;
+                this->ThisObject->Position.y += SpeedMovent * DeltaTime;
             }
             if (CheckKey[2])
             {
-                this->other->Position.x -= SpeedMovent * DeltaTime;
+                this->ThisObject->Position.x -= SpeedMovent * DeltaTime;
             }
             if (CheckKey[3])
             {
-                this->other->Position.x += SpeedMovent * DeltaTime;
+                this->ThisObject->Position.x += SpeedMovent * DeltaTime;
             }
         }
     }
@@ -192,10 +192,10 @@ class PosCamera : public Component
 public:
     inline void Update(float DeltaTime) override
     {
-        if (this->other != nullptr && this->ThisCamera != nullptr)
+        if (this->ThisObject != nullptr && this->ThisCamera != nullptr)
         {
-            ThisCamera->x = other->Position.x - (ThisCamera->viewPort.w * X);
-            ThisCamera->y = other->Position.y - (ThisCamera->viewPort.h * Y);
+            ThisCamera->x = ThisObject->Position.x - (ThisCamera->viewPort.w * X);
+            ThisCamera->y = ThisObject->Position.y - (ThisCamera->viewPort.h * Y);
         }
     }
 
