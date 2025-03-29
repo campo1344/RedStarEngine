@@ -151,12 +151,16 @@ void WSDL3::DrawALL()
 
             for (auto &spr : sprites)
             {
-                TempDest.x = spr->dest.x - cam->x;
-                TempDest.y = spr->dest.y - cam->y;
-                TempDest.h = spr->dest.h;
-                TempDest.w = spr->dest.w;
 
-                SDL_RenderTextureRotated(this->renderer, spr->texture, &spr->src, &TempDest, spr->angle, NULL, SDL_FLIP_NONE);
+                if (spr->dest.x <= cam->x + cam->viewPort.w && spr->dest.x + spr->dest.w >= cam->x && spr->dest.y <= cam->y + cam->viewPort.h && spr->dest.y + spr->dest.h >= cam->y)
+                {
+                    TempDest.x = spr->dest.x - cam->x;
+                    TempDest.y = spr->dest.y - cam->y;
+                    TempDest.h = spr->dest.h;
+                    TempDest.w = spr->dest.w;
+                    
+                    SDL_RenderTextureRotated(this->renderer, spr->texture, &spr->src, &TempDest, spr->angle, NULL, SDL_FLIP_NONE);
+                }
             }
         }
     }
