@@ -3,6 +3,8 @@
 #include <WSDL3.hpp>
 #include <vec.hpp>
 
+#include <ECS.hpp>
+
 WSDL3 *win = nullptr;
 
 typedef enum TypeProccesProgram
@@ -80,7 +82,7 @@ int main(int argc, char *argv[])
     SPR_Planet2->dest.h = 200;
 	
 	DrawSprite* DrawPlanet1 = new DrawSprite();
-	ObjectTest* OBJPlanet1 = new ObjectTest();
+	ECS* OBJPlanet1 = new ECS();
     OBJPlanet1->width = 200;
     OBJPlanet1->height = 200;
     OBJPlanet1->Position.x = 400;
@@ -91,7 +93,7 @@ int main(int argc, char *argv[])
     OBJPlanet1->AddComponent(DrawPlanet1);
 
     DrawSprite* DrawPlanet2 = new DrawSprite();
-	ObjectTest* OBJPlanet2 = new ObjectTest();
+	ECS* OBJPlanet2 = new ECS();
     OBJPlanet2->width = 200;
     OBJPlanet2->height = 200;
 	DrawPlanet2->SetPositionDraw(0.5, 0.5);
@@ -105,7 +107,7 @@ int main(int argc, char *argv[])
     OBJPlanet2->AddComponent(RotPlanet2);
 
     Camera* camUser = win->CreateCamera(800, 600, 0, 0);
-    ObjectTest *Player = new ObjectTest();
+    ECS *Player = new ECS();
     
     SimpleControllerRPGNoCollision *ControlPlayer = new SimpleControllerRPGNoCollision();
     ControlPlayer->AddObjectController(Player);
