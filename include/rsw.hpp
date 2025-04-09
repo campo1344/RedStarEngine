@@ -30,6 +30,7 @@ extern "C"
         Texture(SDL_Texture *AddTexture = nullptr);
         ~Texture();
         static SDL_Texture *LoadTexture(const char *FilePath, SDL_Renderer *render);
+        inline SDL_Texture *GetTexture() { return this->text; }
     };
 
     typedef struct Sprite
@@ -50,20 +51,32 @@ extern "C"
         SDL_Rect ViewPort;
     } Camera;
 
+    typedef struct Alarm
+    {
+        Uint64 TimeStart;
+        int EndTime;
+        bool IsCall = false;
+        int ID;
+    } Alarm;
+
     class RSW_API WSDL3
     {
     private:
-        std::vector<std::shared_ptr<Sprite>> Sprites;
+        std::vector<Sprite *> Sprites;
         std::map<std::string, std::unique_ptr<Texture>> Textures;
         std::vector<std::shared_ptr<Camera>> cameras;
+        std::vector<Alarm *> alarms;
         int IndexSprite = 0;
         int IndexCamera = 0;
+        int IndexAlarm = 0;
         bool windowC = true;
+        SDL_FRect TempDest;
 
     public:
         static SDL_Window *window;
         static SDL_Renderer *renderer;
         static SDL_Event event;
+
         WSDL3();
         ~WSDL3();
 
@@ -71,11 +84,25 @@ extern "C"
         void Event();
         void Draw();
         void OrderDraw();
+        void CheackAlarm();
 
         void CreateTexture(const char *FilePath, std::string nameTexture);
-        std::shared_ptr<Sprite> CreateSprite(std::string nameTexture, int Depth);
+        Sprite *CreateSprite(std::string nameTexture, int Depth);
+        //100 = 1s
+        Alarm *CreateAlarm(int TimeEnd);
+        //100 = 1s
+        void ResetAlarm(Alarm *AlarmReset, int NewTime);
+        std::shared_ptr<Camera> CreateCamera(int w, int h, int PosX, int PosY);
 
-        //return true = window Close or false = window Open
+        bool DestroySprite(Sprite *Dspr);
+        bool DestroyCamera(std::shared_ptr<Camera> &Dcam);
+        bool DestroyAlarm(Alarm *Dalarm);
+
+        void ClearAlarms();
+        void ClearSprite();
+        void ClearCamera();
+
+        // return true = window Close or false = window Open
         inline bool WindowClose() { return windowC; }
     };
 
